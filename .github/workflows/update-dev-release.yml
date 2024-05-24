@@ -1,35 +1,48 @@
-name: Create or Replace Dev Release
-
 on:
   push:
     branches:
       - master
 
 jobs:
-  create_or_replace_dev_release:
+  release:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Create or Replace Release
-        id: create_or_replace_release
+      - name: Set up Git
         run: |
-          # Get the latest commit hash
-          COMMIT_HASH=$(git rev-parse --short HEAD)
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
 
-          # Create or update the release named 'dev'
-          RELEASE_ID=$(curl -X GET -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/tags/dev" | jq -r '.id')
+      - name: Verify current commit
+        run: |
+          echo "Current commit:"
+          git log -1
 
-          if [ "$RELEASE_ID" != "null" ]; then
-            # If release exists, update it
-            curl -X PATCH -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases/${RELEASE_ID}" -H "Accept: application/vnd.github.v3+json" -d "{\"tag_name\":\"dev\",\"target_commitish\":\"${GITHUB_SHA}\",\"name\":\"Dev Release\",\"body\":\"Release created by GitHub Actions\",\"draft\":false,\"prerelease\":false}"
-          else
-            # If release doesn't exist, create it
-            curl -X POST -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" "https://api.github.com/repos/${GITHUB_REPOSITORY}/releases" -H "Accept: application/vnd.github.v3+json" -d "{\"tag_name\":\"dev\",\"target_commitish\":\"${GITHUB_SHA}\",\"name\":\"Dev Release\",\"body\":\"Release created by GitHub Actions\",\"draft\":false,\"prerelease\":false,\"asset_links\":[{\"name\":\"source-code.zip\",\"url\":\"https://github.com/${GITHUB_REPOSITORY}/archive/refs/heads/main.zip\"}]}"
-          fi
+      - name: Delete existing tag
+        run: |
+          git tag -d dev || true
+          git push origin :refs/tags/dev || true
 
+      - name: Verify tag deletion
+        run: |
+          git tag -l
+
+      - name: Create new tag
+        run: |
+          git tag dev
+          git push origin dev
+
+      - name: Verify new tag creation
+        run: |
+          git tag -l
+
+      - name: Create or update GitHub release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: dev
+          draft: false
+          prerelease: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_SHA: ${{ github.sha }}
