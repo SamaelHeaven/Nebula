@@ -3,7 +3,7 @@ name: Create or Replace Dev Release
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   create_or_replace_dev_release:
