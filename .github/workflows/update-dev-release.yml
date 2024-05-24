@@ -45,6 +45,6 @@ jobs:
         with:
           tag_name: dev
           draft: false
-          prerelease: false
+          prerelease: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
