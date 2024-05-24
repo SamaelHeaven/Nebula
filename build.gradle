@@ -6,11 +6,6 @@ plugins {
 group = 'org.samaelheaven'
 version = '1.0-SNAPSHOT'
 
-compileJava {
-    targetCompatibility = 21
-    sourceCompatibility = 21
-}
-
 repositories {
     mavenCentral()
 }
