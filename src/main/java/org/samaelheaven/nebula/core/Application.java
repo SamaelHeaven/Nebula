@@ -2,6 +2,6 @@ package org.samaelheaven.nebula.core;
 
 public class Application {
     public void Test() {
-        System.out.println("Hello world!");
+        System.out.println("Test!");
     }
 }
