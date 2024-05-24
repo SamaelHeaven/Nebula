@@ -1,7 +1,5 @@
 package org.samaelheaven.nebula.core;
 
-public class Application {
-    public void Test() {
-        System.out.println("It works");
-    }
+public abstract class Application {
+
 }
