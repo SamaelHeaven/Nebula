@@ -10,17 +10,17 @@ import java.util.WeakHashMap;
 
 public final class Kernel {
     private static final Map<Thread, Response> currentResponses = new WeakHashMap<>();
-    private static Application application;
+    private static BaseApplication application;
 
     public static @NotNull Response getCurrentResponse() {
         return currentResponses.get(Thread.currentThread());
     }
 
-    public static @NotNull Application getApplication() {
+    public static @NotNull BaseApplication getApplication() {
         return application;
     }
 
-    public static void launch(@NotNull Application application) {
+    public static void launch(@NotNull BaseApplication application) {
         if (Kernel.application != null) {
             throw new NebulaException();
         }
