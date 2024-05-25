@@ -13,7 +13,7 @@ public final class Config {
 
     static {
         try {
-            properties.load(Resource.inputStream("/environment/config.properties"));
+            properties.load(Resource.inputStream("environment/config.properties"));
         } catch (IOException e) {
             throw new NebulaException(e);
         }
@@ -97,14 +97,21 @@ public final class Config {
 
     public static boolean getBoolean(@NotNull String key, boolean defaultValue) {
         try {
-            return getBoolean(key);
+            var string = getString(key);
+            if (string.equalsIgnoreCase("true")) {
+                return true;
+            }
+            if (string.equalsIgnoreCase("false")) {
+                return false;
+            }
+            return defaultValue;
         } catch (Exception e) {
             return defaultValue;
         }
     }
 
     public static @NotNull String getString(@NotNull String key) {
-        return Objects.requireNonNull(getProperty(key));
+        return Objects.requireNonNull(getProperty(key)).trim();
     }
 
     public static @NotNull String getString(@NotNull String key, @NotNull String defaultValue) {
