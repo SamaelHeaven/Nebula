@@ -1,23 +1,27 @@
 package org.samaelheaven.nebula.database;
 
-public class BrokerException extends RuntimeException {
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.Nullable;
+import org.samaelheaven.nebula.core.NebulaException;
+
+public class BrokerException extends NebulaException {
     public BrokerException() {
         super();
     }
 
-    public BrokerException(String message) {
+    public BrokerException(@Nullable @NonNls String message) {
         super(message);
     }
 
-    public BrokerException(String message, Throwable cause) {
+    public BrokerException(@Nullable @NonNls String message, @Nullable Throwable cause) {
         super(message, cause);
     }
 
-    public BrokerException(Throwable cause) {
+    public BrokerException(@Nullable Throwable cause) {
         super(cause);
     }
 
-    protected BrokerException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected BrokerException(@Nullable @NonNls String message, @Nullable Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }
