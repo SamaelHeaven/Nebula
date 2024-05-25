@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.WeakHashMap;
 
 public final class Kernel {
-    public static final Map<Thread, Response> currentResponses = new WeakHashMap<>();
+    private static final Map<Thread, Response> currentResponses = new WeakHashMap<>();
     private static Application application;
 
     public static @NotNull Response getCurrentResponse() {
