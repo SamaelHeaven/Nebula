@@ -5,6 +5,7 @@ import org.jetbrains.annotations.NotNull;
 public final class Path {
     public static @NotNull String format(@NotNull String path) {
         path = path.replace("\\", "/");
+        path = path.replaceAll("/+", "/");
         while (path.startsWith("/")) {
             path = path.substring(1);
         }
@@ -13,4 +14,5 @@ public final class Path {
         }
         return "/" + path;
     }
+
 }
